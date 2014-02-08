@@ -121,6 +121,9 @@ pages_purge(void *addr, size_t length)
 #ifdef _WIN32
 	VirtualAlloc(addr, length, MEM_RESET, PAGE_READWRITE);
 	unzeroed = true;
+#elif __sun
+    #undef JEMALLOC_PURGE_MADVISE_DONTNEED
+    #define JEMALLOC_PURGE_MADVISE_FREE
 #else
 #  ifdef JEMALLOC_PURGE_MADVISE_DONTNEED
 #    define JEMALLOC_MADV_PURGE MADV_DONTNEED
